@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Order confirmation</title>
+</head>
+<body>
+    <H3>Dear <span th:text="${user.name}"></span></H3>
+    <p>Your order #<span th:text="${order.number}"></span> from <span th:text="${order.date}"></span> is now processing
+        and will be delivered ASAP.</p>
+    <table>
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>Description</td>
+                <td>Quantity</td>
+                <td>Price</td>
+                <td>Subtotal</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item, index: ${order.items}">
+                <td th:text="${index.index}"></td>
+                <td th:text="${item.key.description}"></td>
+                <td th:text="${item.value}"></td>
+                <td th:text="${item.key.price}"></td>
+                <td th:text="${item.value * item.key.price}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <h5>Customers who bought this item also bought:</h5>
+    <div th:each="promoItem: ${promo}">
+        <p><span th:text="${promoItem.description}"></span> $<span th:text="${promoItem.price}"></span></p>
+    </div>
+
+    <p th:if="${user.registered}">You have <span th:text="${user.bonusAccount}"></span> bonus coins. Spend it!</p>
+    <p th:unless="${user.registered}">Register now and collect bonus coins!</p>
+</body>
+</html>
